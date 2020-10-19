@@ -1,4 +1,3 @@
-import sys
 import tempfile
 import os.path
 
@@ -9,8 +8,6 @@ import streamlink.cache
 from shutil import rmtree
 import unittest
 from tests.mock import patch
-
-is_py2 = (sys.version_info[0] == 2)
 
 
 class TestCache(unittest.TestCase):
@@ -44,10 +41,7 @@ class TestCache(unittest.TestCase):
 
     @patch('os.path.exists', return_value=True)
     def test_load_fail(self, exists_mock):
-        if is_py2:
-            patch('__builtin__.open', side_effect=IOError)
-        else:
-            patch('streamlink.cache.open', side_effect=IOError)
+        patch('streamlink.cache.open', side_effect=IOError)
         self.cache._load()
         self.assertEqual({}, self.cache._cache)
 
